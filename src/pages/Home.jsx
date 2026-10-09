@@ -149,10 +149,9 @@ const Home = () => {
       <section className="promo">
         <div className="container promo-inner">
           <div>
-            <h2>Two ways to pay</h2>
+            <h2>Secure & Convenient Checkout</h2>
             <p>
-              Choose the demo card for an instantly paid order, or cash on delivery to pay later. Both are simulated, so
-              nothing is ever charged.
+              Choose your preferred payment method and complete your order with ease. Enjoy a smooth and hassle-free shopping experience with SwiftKart.
             </p>
           </div>
           <Link to="/products" className="btn btn-accent">
