@@ -1,72 +1,201 @@
+/* ---------- Hero ---------- */
 .hero {
   background: #0b4a57;
   color: #fff;
-  padding: 4rem 0 3.5rem;
+  padding: 4.5rem 0 4rem;
 }
 
 .hero-inner {
   max-width: 1160px;
 }
 
-.hero h1 {
-  font-size: clamp(2.1rem, 5vw, 3.4rem);
-  max-width: 14ch;
-  margin-bottom: 1rem;
-  letter-spacing: -0.025em;
+.hero-inner-split {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  gap: 3.5rem;
+  align-items: center;
 }
 
-.hero p {
-  max-width: 52ch;
-  font-size: 1.1rem;
+.hero h1 {
+  font-size: clamp(2.2rem, 5vw, 3.6rem);
+  max-width: 15ch;
+  margin-bottom: 1.1rem;
+  letter-spacing: -0.03em;
+  line-height: 1.08;
+}
+
+.hero h1 span {
+  color: var(--accent);
+}
+
+.hero-copy p {
+  max-width: 46ch;
+  font-size: 1.12rem;
   color: #cfe3e8;
+  margin-bottom: 1.9rem;
+}
+
+.hero-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1.25rem;
   margin-bottom: 1.75rem;
+}
+
+.hero-actions .btn {
+  padding: 0.85rem 1.6rem;
+  font-size: 1.05rem;
+}
+
+.hero-link {
+  color: #e6f1f4;
+  font-weight: 600;
+  text-underline-offset: 4px;
+}
+
+.hero-link:hover {
+  color: #fff;
 }
 
 .hero-search {
   display: flex;
+  align-items: center;
   gap: 0.6rem;
-  max-width: 620px;
-  margin-bottom: 1.25rem;
+  max-width: 480px;
+  padding: 0.35rem 0.35rem 0.35rem 0.9rem;
+  background: #fff;
+  border-radius: var(--radius);
+  color: var(--muted);
+}
+
+.hero-search:focus-within {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
 }
 
 .hero-search input {
   flex: 1;
+  min-width: 0;
+  padding: 0.5rem 0.2rem;
   border: none;
-  padding: 0.85rem 1rem;
-  font-size: 1.05rem;
-  color: #1f2937;
-  background: #ffffff;
+  background: transparent;
+  color: var(--ink);
+  outline: none;
 }
 
-.hero-search input::placeholder {
-  color: #6b7280;
-  opacity: 1;
+.hero-search input:focus {
+  border: none;
+  outline: none;
 }
 
 .hero-search .btn {
-  white-space: nowrap;
+  flex-shrink: 0;
 }
 
-.hero-chips {
+/* Product showcase: real products from the catalogue */
+.hero-visual {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 1rem;
+  min-height: 400px;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 20px;
+}
+
+.hero-tile {
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-
-.chip {
-  padding: 0.35rem 0.9rem;
-  border: 1px solid #3f7683;
-  border-radius: 999px;
-  color: #e6f1f4;
-  text-decoration: none;
-  font-weight: 600;
-  font-size: 0.93rem;
-}
-
-.chip:hover {
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
   background: #fff;
-  color: var(--primary-dark);
-  border-color: #fff;
+  border-radius: var(--radius-large);
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.hero-tile:first-child {
+  grid-row: span 2;
+}
+
+/* with two products the second one fills the right column, with one it fills the panel */
+.hero-tile:nth-child(2):last-child {
+  grid-row: span 2;
+}
+
+.hero-tile:only-child {
+  grid-column: 1 / -1;
+}
+
+.hero-tile-image {
+  position: relative;
+  flex: 1;
+  min-height: 130px;
+  background: #f4f7f8;
+}
+
+.hero-tile-image .img-frame,
+.hero-tile-image .img-placeholder {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.hero-tile-image .img-frame img {
+  inset: 0.75rem;
+  width: calc(100% - 1.5rem);
+  height: calc(100% - 1.5rem);
+  object-fit: contain;
+}
+
+.hero-tile-label {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.75rem 0.9rem;
+  border-top: 1px solid var(--line);
+}
+
+.hero-tile-label strong {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.95rem;
+}
+
+.hero-tile-label span {
+  flex-shrink: 0;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  color: var(--primary);
+}
+
+@media (hover: hover) {
+  .hero-tile:hover .hero-tile-label strong {
+    color: var(--primary);
+  }
+}
+
+.hero-tile:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.hero-tile-skeleton {
+  min-height: 130px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.1) 25%, rgba(255, 255, 255, 0.2) 40%, rgba(255, 255, 255, 0.1) 60%);
+  background-size: 300% 100%;
+  animation: shimmer 1.4s ease infinite;
+}
+
+#categories {
+  scroll-margin-top: calc(var(--navbar-height) + 1rem);
 }
 
 .category-grid {
@@ -133,15 +262,80 @@
   .category-grid {
     grid-template-columns: repeat(3, 1fr);
   }
+
+  .hero {
+    padding: 3rem 0 2.75rem;
+  }
+
+  .hero-inner-split {
+    grid-template-columns: 1fr;
+    gap: 2.25rem;
+  }
+
+  /* tablet: the showcase becomes one row of equal tiles under the text */
+  .hero-visual {
+    grid-template-columns: none;
+    grid-template-rows: auto;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(0, 1fr); /* 1, 2 or 3 tiles always share the width equally */
+    min-height: 0;
+  }
+
+  .hero-tile:first-child,
+  .hero-tile:nth-child(2):last-child {
+    grid-row: auto;
+  }
+
+  .hero-tile:only-child {
+    grid-column: auto;
+  }
+
+  .hero-tile-image {
+    flex: none;
+    aspect-ratio: 1 / 1;
+    min-height: 0;
+  }
+
+  .hero-tile-skeleton {
+    aspect-ratio: 1 / 1.25;
+  }
 }
 
 @media (max-width: 640px) {
   .hero {
-    padding: 2.5rem 0 2.25rem;
+    padding: 2.25rem 0 2rem;
   }
 
-  .hero-search {
+  .hero-copy p {
+    font-size: 1.02rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-actions {
+    gap: 1rem;
+    margin-bottom: 1.4rem;
+  }
+
+  .hero-actions .btn {
+    flex: 1 1 auto;
+  }
+
+  .hero-visual {
+    gap: 0.6rem;
+    padding: 0.6rem;
+    border-radius: 16px;
+  }
+
+  .hero-tile-label {
     flex-direction: column;
+    align-items: flex-start;
+    gap: 0.1rem;
+    padding: 0.55rem 0.65rem;
+  }
+
+  .hero-tile-label strong {
+    width: 100%;
+    font-size: 0.85rem;
   }
 
   .category-grid {
@@ -151,5 +345,12 @@
   .promo-inner {
     flex-direction: column;
     align-items: flex-start;
+  }
+}
+
+@media (max-width: 440px) {
+  /* very small phones: two bigger tiles instead of three tiny ones */
+  .hero-tile:nth-child(3) {
+    display: none;
   }
 }

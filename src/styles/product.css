@@ -1,7 +1,7 @@
 /* Product grid and card */
 .product-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   gap: 1.25rem;
 }
 
@@ -12,40 +12,53 @@
   border: 1px solid var(--line);
   border-radius: var(--radius-large);
   overflow: hidden;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
 }
 
-.product-card:hover {
-  box-shadow: var(--shadow);
-}
-
+/* Every picture gets the same square frame. "contain" shows the whole product without cropping. */
 .product-card-image {
   display: block;
-  aspect-ratio: 4 / 3;
-  background: #e4ebee;
+  aspect-ratio: 1 / 1;
+  background: #f4f7f8;
+  border-bottom: 1px solid var(--line);
+  overflow: hidden;
 }
 
-.product-card-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+.product-card-image .img-frame img {
+  inset: 0.75rem;
+  width: calc(100% - 1.5rem);
+  height: calc(100% - 1.5rem);
+  object-fit: contain;
+  transition: opacity 0.25s ease, transform 0.3s ease;
+}
+
+.product-card-out .product-card-image {
+  opacity: 0.6;
 }
 
 .product-card-body {
   display: flex;
   flex-direction: column;
-  gap: 0.35rem;
-  padding: 0.9rem 1rem 1rem;
+  gap: 0.4rem;
+  padding: 1rem 1.05rem 1.1rem;
   flex: 1;
 }
 
 .product-category {
   color: var(--muted);
-  font-size: 0.88rem;
+  font-size: 0.86rem;
 }
 
+/* Two lines at most, and always the same height, so the cards in a row line up */
 .product-name {
-  font-size: 1.05rem;
   margin: 0;
+  font-size: 1.02rem;
+  line-height: 1.3;
+  min-height: 2.6em;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .product-name a {
@@ -59,17 +72,18 @@
 
 .product-meta {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-between;
   gap: 0.5rem;
   margin-top: auto;
-  padding-top: 0.4rem;
+  padding-top: 0.5rem;
 }
 
 .product-price {
   font-family: var(--font-heading);
   font-weight: 700;
-  font-size: 1.2rem;
+  font-size: 1.3rem;
+  letter-spacing: -0.01em;
 }
 
 .stock {
@@ -89,26 +103,77 @@
   color: var(--danger);
 }
 
+/* On cards the stock status is a small pill */
+.product-card .stock {
+  padding: 0.15rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  white-space: nowrap;
+}
+
+.product-card .stock-in {
+  background: var(--success-soft);
+}
+
+.product-card .stock-low {
+  background: var(--warning-soft);
+}
+
+.product-card .stock-out {
+  background: var(--danger-soft);
+}
+
 .product-actions {
   display: flex;
-  gap: 0.5rem;
-  margin-top: 0.5rem;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.35rem;
+  margin-top: 0.6rem;
 }
 
 .product-actions .btn {
-  flex: 1;
-  padding-left: 0.5rem;
-  padding-right: 0.5rem;
+  min-height: 42px;
+  padding-left: 0.6rem;
+  padding-right: 0.6rem;
+}
+
+.card-link {
+  align-self: center;
+  padding: 0.25rem 0.5rem;
+  color: var(--primary);
+  font-size: 0.92rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.card-link:hover {
+  text-decoration: underline;
 }
 
 .card-feedback {
-  margin: 0.25rem 0 0;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin: 0.15rem 0 0;
   font-size: 0.9rem;
   color: var(--success);
 }
 
 .card-feedback-error {
   color: var(--danger);
+}
+
+/* Hover effects only on devices that really hover (not on touch screens) */
+@media (hover: hover) {
+  .product-card:hover {
+    border-color: #b4c9cf;
+    box-shadow: 0 8px 24px rgba(23, 35, 43, 0.1);
+    transform: translateY(-2px);
+  }
+
+  .product-card:hover .product-card-image .img-frame img {
+    transform: scale(1.04);
+  }
 }
 
 /* Stars */
@@ -150,27 +215,156 @@
   color: var(--accent-dark);
 }
 
-/* Products page */
-.products-layout {
-  display: grid;
-  grid-template-columns: 250px 1fr;
-  gap: 1.75rem;
-  align-items: start;
-}
-
-.filters {
+/* Products page: search bar, category chips, price and sort row */
+.search-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 1rem;
+  padding: 0.4rem 0.4rem 0.4rem 1rem;
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: var(--radius-large);
-  padding: 1.1rem;
-  position: sticky;
-  top: calc(var(--navbar-height) + 1rem);
+  color: var(--muted);
 }
 
-.filters-block {
-  margin-top: 1.25rem;
-  padding-top: 1.25rem;
-  border-top: 1px solid var(--line);
+.search-bar:focus-within {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-soft);
+}
+
+.search-bar svg {
+  flex-shrink: 0;
+}
+
+.search-bar input {
+  flex: 1;
+  min-width: 0;
+  padding: 0.55rem 0.2rem;
+  border: none;
+  background: transparent;
+  color: var(--ink);
+  font-size: 1.02rem;
+  outline: none;
+}
+
+.search-bar input:focus {
+  border: none;
+  outline: none;
+}
+
+.category-chips {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.35rem;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.category-chip {
+  flex-shrink: 0;
+  padding: 0.45rem 1.05rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--ink);
+  font-weight: 600;
+  font-size: 0.93rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.category-chip:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.category-chip-active,
+.category-chip-active:hover {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #fff;
+}
+
+.listing-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.price-filter {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 0.7rem;
+}
+
+.toolbar-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.toolbar-field label {
+  color: var(--muted);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.price-filter input {
+  width: 120px;
+}
+
+.toolbar-sort select {
+  min-width: 200px;
+}
+
+.active-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.filter-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.25rem 0.35rem 0.25rem 0.8rem;
+  background: var(--primary-soft);
+  border-radius: 999px;
+  color: var(--primary-dark);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.filter-tag button {
+  display: inline-flex;
+  padding: 0.2rem;
+  background: transparent;
+  border: none;
+  border-radius: 50%;
+  color: inherit;
+  cursor: pointer;
+}
+
+.filter-tag button:hover {
+  background: rgba(14, 94, 111, 0.15);
+}
+
+.clear-filters {
+  padding: 0.25rem 0.4rem;
+  background: none;
+  border: none;
+  color: var(--primary);
+  font-weight: 600;
+  text-decoration: underline;
+  cursor: pointer;
 }
 
 /* Product details */
@@ -339,14 +533,6 @@
 }
 
 @media (max-width: 860px) {
-  .products-layout {
-    grid-template-columns: 1fr;
-  }
-
-  .filters {
-    position: static;
-  }
-
   .details-layout {
     grid-template-columns: 1fr;
     gap: 1.5rem;
@@ -425,7 +611,7 @@
 }
 
 .skeleton-image {
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 1 / 1;
 }
 
 .skeleton-line {
@@ -441,25 +627,56 @@
 
 @media (max-width: 560px) {
   .product-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 0.85rem;
   }
 
   .product-card-body {
-    padding: 0.7rem 0.75rem 0.85rem;
+    padding: 0.75rem 0.8rem 0.9rem;
   }
 
-  .product-actions {
-    flex-direction: column;
+  .product-name {
+    font-size: 0.95rem;
   }
 
   .product-meta {
     flex-direction: column;
     align-items: flex-start;
-    gap: 0.1rem;
+    gap: 0.35rem;
+  }
+
+  .product-price {
+    font-size: 1.15rem;
   }
 
   .details-price {
     font-size: 1.7rem;
+  }
+
+  .search-bar {
+    padding-left: 0.8rem;
+  }
+
+  .price-filter {
+    width: 100%;
+  }
+
+  .price-filter .toolbar-field {
+    flex: 1;
+  }
+
+  .price-filter input {
+    width: 100%;
+  }
+
+  .toolbar-sort,
+  .toolbar-sort select {
+    width: 100%;
+  }
+}
+
+@media (max-width: 339px) {
+  .product-grid {
+    grid-template-columns: 1fr;
   }
 }

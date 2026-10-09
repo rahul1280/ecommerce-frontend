@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Check, ShoppingCart } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
 import StarRating from './StarRating';
@@ -39,15 +40,18 @@ const ProductCard = ({ product }) => {
   };
 
   return (
-    <article className="product-card">
-      <Link to={`/products/${product._id}`} className="product-card-image">
+    <article className={outOfStock ? 'product-card product-card-out' : 'product-card'}>
+      {/* The product name below is the keyboard link, so the picture link is skipped by Tab */}
+      <Link to={`/products/${product._id}`} className="product-card-image" tabIndex={-1}>
         <ProductImage product={product} alt={product.name} width={600} />
       </Link>
 
       <div className="product-card-body">
         <span className="product-category">{capitalize(product.category)}</span>
         <h3 className="product-name">
-          <Link to={`/products/${product._id}`}>{product.name}</Link>
+          <Link to={`/products/${product._id}`} title={product.name}>
+            {product.name}
+          </Link>
         </h3>
 
         <StarRating value={product.ratings?.average || 0} count={product.ratings?.count || 0} />
@@ -60,16 +64,29 @@ const ProductCard = ({ product }) => {
         </div>
 
         <div className="product-actions">
-          <Link to={`/products/${product._id}`} className="btn btn-outline btn-sm">
+          <button className="btn btn-primary btn-block" onClick={handleAddToCart} disabled={outOfStock || adding}>
+            {outOfStock ? (
+              'Out of stock'
+            ) : adding ? (
+              'Adding...'
+            ) : (
+              <>
+                <ShoppingCart size={17} aria-hidden="true" />
+                Add to cart
+              </>
+            )}
+          </button>
+          <Link to={`/products/${product._id}`} className="card-link">
             View details
           </Link>
-          <button className="btn btn-primary btn-sm" onClick={handleAddToCart} disabled={outOfStock || adding}>
-            {adding ? 'Adding...' : 'Add to cart'}
-          </button>
         </div>
 
         {feedback.text && (
-          <p className={feedback.type === 'error' ? 'card-feedback card-feedback-error' : 'card-feedback'}>
+          <p
+            className={feedback.type === 'error' ? 'card-feedback card-feedback-error' : 'card-feedback'}
+            role={feedback.type === 'error' ? 'alert' : 'status'}
+          >
+            {feedback.type === 'success' && <Check size={15} aria-hidden="true" />}
             {feedback.text}
           </p>
         )}
