@@ -132,7 +132,7 @@ const Footer = () => {
             <ul className="footer-contact-list">
               <li>
                 <span className="footer-contact-label">Email</span>
-                <a href="mailto:YOUR_EMAIL@example.com">
+                <a href="mailto:rahulmangal836@gmail.com">
                   rahulmangal836@gmail.com
                 </a>
               </li>
