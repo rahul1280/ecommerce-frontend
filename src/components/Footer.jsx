@@ -5,7 +5,7 @@ const Footer = () => (
     <div className="container footer-inner">
       <div>
         <strong className="footer-logo">SwiftKart</strong>
-        <p>A college MERN stack project: React frontend, Express and MongoDB backend.</p>
+        <p>Your one-stop destination for quality products, great deals, and a seamless shopping experience.</p>
       </div>
       <div className="footer-links">
         <Link to="/products">Products</Link>
@@ -13,7 +13,7 @@ const Footer = () => (
         <Link to="/orders">My orders</Link>
       </div>
     </div>
-    <div className="container footer-bottom">Payments in this project are simulated. No real money is charged.</div>
+    <div className="container footer-bottom">© 2026 SwiftKart. All rights reserved. | Privacy Policy | Terms & Conditions</div>
   </footer>
 );
 
